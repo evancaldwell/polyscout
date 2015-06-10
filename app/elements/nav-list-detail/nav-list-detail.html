@@ -1,0 +1,120 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<dom-module id="nav-list-detail">
+  <link rel="import" type="css" href="nav-list-detail.css">
+  <template>
+
+    <paper-drawer-panel id="navDrawerPanel" responsive-width="1280px">
+
+      <div class="nav" drawer>
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span>Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}">
+            <a data-route="home" href="/">
+              <iron-icon icon="home"></iron-icon>
+              <span>Home</span>
+            </a>
+
+            <!-- <a data-route="scouts" href="/scouts">
+              <iron-icon icon="info"></iron-icon>
+              <span>Scouts</span>
+            </a> -->
+
+            <a data-route="correction" href="/correction">
+              <iron-icon icon="mail"></iron-icon>
+              <span>Request Correction</span>
+            </a>
+        </paper-menu>
+      </div>
+
+      <paper-drawer-panel id="mainDrawerPanel" class="main-drawer-panel" main responsive-width="600px"
+          drawer-width="[[_computeListWidth(_isMobile)]]" drawer-toggle-attribute="list-toggle"
+          narrow="{{_isMobile}}">
+
+        <paper-header-panel class="list-panel" drawer>
+
+          <!-- List Toolbar -->
+          <paper-toolbar>
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          </paper-toolbar>
+
+          <!-- List -->
+          <paper-menu class="list" on-iron-activate="_listTap">
+            <template is="dom-repeat" items="{{items}}">
+              <paper-item><span class="paper-font-body1">{{item}}</span></paper-item>
+            </template>
+          </paper-menu>
+
+        </paper-header-panel>
+
+        <paper-header-panel class="content-panel" main>
+
+          <!-- Main Toolbar -->
+          <paper-toolbar>
+            <paper-icon-button icon="arrow-back" list-toggle></paper-icon-button>
+          </paper-toolbar>
+
+          <!-- Main Content -->
+          <div class="content">{{item}}</div>
+
+        </paper-header-panel>
+
+      </paper-drawer-panel>
+
+    </paper-drawer-panel>
+
+  </template>
+</dom-module>
+<script>
+(function() {
+  Polymer({
+    is: 'nav-list-detail',
+
+    _computeListWidth: function(isMobile) {
+      // when in mobile screen size, make the list be 100% width to cover the whole screen
+      return isMobile ? '100%' : '33%';
+    },
+    _listTap: function() {
+      this.$.mainDrawerPanel.closeDrawer();
+    },
+
+    properties: {
+      foo: {
+        type: String,
+        value: 'bar',
+        notify: true
+      },
+      items: {
+        type: Array,
+        notify: true,
+      }
+    },
+        ready: function() {
+        this.items = [
+            'Scout 1',
+            'Scout 2',
+            'Scout 3',
+            'Scout 4',
+            'Scout 5',
+            'Scout 6',
+            'Scout 7',
+            'Scout 8',
+            'Scout 9',
+            'Scout 10'
+            ];
+        }
+  });
+})();
+</script>
