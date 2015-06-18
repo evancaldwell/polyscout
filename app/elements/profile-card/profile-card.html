@@ -15,9 +15,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
     }
+    iron-image {
+      /*background-color: lightgray;*/
+      height: 300px;
+      width: 50%;
+    }
+    .greyscale {
+      filter: grayscale(100%);
+    }
+    #rank-details {
+      margin: 10px;
+      width: 50%;
+    }
+    #required-badge-wrapper > * {
+      float: left;
+    }
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+    <section class="layout horizontal">
+      <iron-image sizing="contain" preload fade src="http://lorempixel.com/200/300"></iron-image>
+      <div id="rank-details">
+        <paper-progress value="27"></paper-progress>
+        <div id="required-badge-wrapper">
+          <template is="dom-repeat" items="{{badges}}">
+            <paper-item id="{{item.name}}">
+              <badge-tile name="{{item.name}}" image="{{item.image}}"></badge-tile>
+            </paper-item>
+          </template>
+        </div>
+      </div>
+    </section>
+    <section>
+      <p>name: Evan Caldwell</p>
+      <p>age: 35</p>
+      <p>rank: First Class</p>
+    </section>
+    <section>
+      <div>Merit Badges</div>
+      <div>Awards</div>
+    </section>
   </template>
 </dom-module>
 <script>
@@ -31,6 +67,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: 'bar',
         notify: true
       }
+    },
+    ready: function() {
+      this.badges = [
+        {'name': 'Programming', 'image': 'http://lorempixel.com/400/400'},
+        {'name': 'woodworking', 'image': 'http://lorempixel.com/400/400'},
+        {'name': 'social engineering', 'image': 'http://lorempixel.com/400/400'},
+        {'name': 'Rocket Science', 'image': 'http://lorempixel.com/400/400'},
+        {'name': 'Hacking', 'image': 'http://lorempixel.com/400/400'}
+      ];
     }
   });
 })();

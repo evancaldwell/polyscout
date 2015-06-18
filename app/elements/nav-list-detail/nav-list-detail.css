@@ -37,7 +37,8 @@ paper-toolbar {
 }
 
 .content {
-  height: 3000px;
+  /*height: 3000px;*/
+  padding: 15px;
 }
 
 paper-material {
