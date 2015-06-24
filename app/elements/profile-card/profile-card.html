@@ -18,10 +18,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     iron-image {
       /*background-color: lightgray;*/
       height: 300px;
-      width: 50%;
+    }
+    paper-progress {
+      height: 20px;
     }
     .greyscale {
       filter: grayscale(100%);
+    }
+    .btn-merit-badge {
+      width: 85%;
+      text-align: center;
+      background-color: lightgrey;
+    }
+    #personal-info {
+      margin: 10px;
+      width: 50%;
     }
     #rank-details {
       margin: 10px;
@@ -32,28 +43,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <section class="layout horizontal">
-      <iron-image sizing="contain" preload fade src="http://lorempixel.com/200/300"></iron-image>
-      <div id="rank-details">
+    <article class="layout horizontal">
+      <section id="personal-info" class="layout vertical">
+        <iron-image sizing="cover" preload fade src="http://lorempixel.com/200/300"></iron-image>
+        <div>
+          <p>name: Evan Caldwell</p>
+          <p>age: 35</p>
+          <p>rank: First Class</p>
+        </div>
+      </section>
+      <section id="rank-details">
         <paper-progress value="27"></paper-progress>
         <div id="required-badge-wrapper">
-          <template is="dom-repeat" items="{{badges}}">
-            <paper-item id="{{item.name}}">
-              <badge-tile name="{{item.name}}" image="{{item.image}}"></badge-tile>
+          <h2>Requirements:</h2>
+          <template is="dom-repeat" items="{{rank.requirements}}">
+            <paper-item id="item">
+              <p>{{item}}</p>
             </paper-item>
           </template>
         </div>
-      </div>
-    </section>
-    <section>
-      <p>name: Evan Caldwell</p>
-      <p>age: 35</p>
-      <p>rank: First Class</p>
-    </section>
-    <section>
-      <div>Merit Badges</div>
-      <div>Awards</div>
-    </section>
+      </section>
+    </article>
+    <article>
+      <paper-button raised class="btn-merit-badge">Merit Badges</paper-button>
+    </article>
   </template>
 </dom-module>
 <script>
@@ -70,12 +83,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     ready: function() {
       this.badges = [
-        {'name': 'Programming', 'image': 'http://lorempixel.com/400/400'},
-        {'name': 'woodworking', 'image': 'http://lorempixel.com/400/400'},
-        {'name': 'social engineering', 'image': 'http://lorempixel.com/400/400'},
-        {'name': 'Rocket Science', 'image': 'http://lorempixel.com/400/400'},
-        {'name': 'Hacking', 'image': 'http://lorempixel.com/400/400'}
+        {
+          "name": "American Business",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-ABIZ.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/american_business_lg.jpg"
+        },
+        {
+          "name": "American Cultures",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-ACUL.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/american_cultures_lg.jpg"
+        },
+        {
+          "name": "American Heritage",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-AHER.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/american_heritage_lg.jpg"
+        },
+        {
+          "name": "American Labor",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-AMLB.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/american_labor_lg.jpg"
+        },
+        {
+          "name": "Animal Science",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-ANML.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/animal_science_lg.jpg"
+        },
       ];
+      this.rank = {
+        "name": "Tenderfoot",
+        "img": "meritbadge.org/wiki/index.php/Image:Tenderfoot2010.jpg",
+        "requirements": [
+          "Pre-campout presentation",
+          "Overnight campout in a tent you pitched",
+          "Campout meal preperation and explanation",
+          "Demonstrate rope and knot skills",
+          "Safe hiking explanation",
+          "Demonstrate prope American flag handling",
+          "Repeat Scout Oath, Law, motto, and slogan",
+          "Know patrol details",
+          "Explain buddies and bullies",
+          "Physical activities record and improvement",
+          "Poinsonous plant identification and treatment",
+          "First aid demonstration",
+          "Live and give examples of Scout Oath and Law",
+          "Participate in a Scoutmaster conference",
+          "Successfully complete board of review"
+        ]
+      }
     }
   });
 })();

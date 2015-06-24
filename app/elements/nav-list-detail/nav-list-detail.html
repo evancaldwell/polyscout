@@ -234,7 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- List -->
           <paper-menu class="list" on-iron-activate="_listTap">
             <template is="dom-repeat" items="{{items}}">
-              <paper-item id="{{item.id}}"><span class="paper-font-body1">{{item.name}}</span></paper-item>
+              <paper-item id="{{item.id}}" on-tap="_menuSelected"><span class="paper-font-body1">{{item.name}}</span></paper-item>
             </template>
           </paper-menu>
 
@@ -248,8 +248,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-toolbar>
 
           <!-- Main Content -->
-          <div class="content">
-            <p>{{item.name}}</p>
+          <div id="mainContent" class="content">
             <profile-card></profile-card>
           </div>
 
@@ -273,6 +272,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _listTap: function() {
       this.$.mainDrawerPanel.closeDrawer();
       this.currentScout = 'changed';
+    },
+    _menuSelected: function (e) {
+      // console.log(e.model.item.name);
+      this.$.mainContent.innerHTML = '<profile-card></profile-card>'
     },
 
     properties: {
