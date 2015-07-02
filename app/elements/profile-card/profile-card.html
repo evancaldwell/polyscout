@@ -38,6 +38,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: 10px;
       width: 50%;
     }
+    .rank-check{
+      margin: 10px 0px;
+    }
     #required-badge-wrapper > * {
       float: left;
     }
@@ -53,19 +56,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </section>
       <section id="rank-details">
-        <paper-progress value="27"></paper-progress>
+        <paper-progress value="{{reqProgress}}"></paper-progress>
         <div id="required-badge-wrapper">
           <h2>Requirements:</h2>
+          <!-- ========== Rank requirements checklist ========== -->
           <template is="dom-repeat" items="{{rank.requirements}}">
-            <paper-item id="item">
-              <p>{{item}}</p>
-            </paper-item>
+            <paper-checkbox class="rank-check">{{item}}</paper-checkbox>
           </template>
         </div>
       </section>
     </article>
     <article>
       <paper-button raised class="btn-merit-badge">Merit Badges</paper-button>
+    </article>
+    <article>
+      <h2>Output</h2>
+      <p>{{reqComplete}}</p>
+      <p>{{rank.requirements.length}}</p>
+      <p>{{reqStep}}</p>
+      <p>{{reqProgress}}</p>
     </article>
   </template>
 </dom-module>
@@ -129,7 +138,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           "Participate in a Scoutmaster conference",
           "Successfully complete board of review"
         ]
-      }
+      };
+      this.reqComplete = 10;
+      this.reqStep = 100 / this.rank.requirements.length;
+      this.reqProgress = this.reqComplete * this.reqStep;
     }
   });
 })();
