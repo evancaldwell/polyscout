@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
     }
     iron-image {
-      /*background-color: lightgray;*/
+      background-color: lightgray;
       height: 300px;
     }
     paper-progress {
@@ -48,9 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <article class="layout horizontal">
       <section id="personal-info" class="layout vertical">
-        <iron-image sizing="cover" preload fade src="http://lorempixel.com/200/300"></iron-image>
+        <iron-image sizing="cover" preload fade src=""></iron-image>
         <div>
-          <p>name: Evan Caldwell</p>
+          <p>name: {{scoutname}}</p>
           <p>age: 35</p>
           <p>rank: First Class</p>
         </div>
@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <h2>Requirements:</h2>
           <!-- ========== Rank requirements checklist ========== -->
           <template is="dom-repeat" items="{{rank.requirements}}">
-            <paper-checkbox class="rank-check">{{item}}</paper-checkbox>
+            <paper-checkbox class="rank-check" on-change="_updateProgress">{{item}}</paper-checkbox>
           </template>
         </div>
       </section>
@@ -71,10 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </article>
     <article>
       <h2>Output</h2>
-      <p>{{reqComplete}}</p>
-      <p>{{rank.requirements.length}}</p>
-      <p>{{reqStep}}</p>
-      <p>{{reqProgress}}</p>
+      <p>reqComplete: <span>{{reqComplete}}</span></p>
+      <p>req. length: <span>{{rank.requirements.length}}</span></p>
+      <p>reqStep: <span>{{reqStep}}</span></p>
+      <p>reqProg: <span>{{reqProgress}}</span></p>
     </article>
   </template>
 </dom-module>
@@ -83,12 +83,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Polymer({
     is: 'profile-card',
 
-    properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
+    _updateProgress:function(e) {
+      console.log(e);
+      if(e.model._children[1].checked === true) {
+        this.reqComplete++;
+        this.reqProgress = this.reqComplete * this.reqStep;
+      } else {
+        this.reqComplete--;
+        this.reqProgress = this.reqComplete * this.reqStep;
       }
+    },
+
+    properties: {
+      scoutname: {type: String, value:'', notify:true},
+      foo: {type: String, value: 'bar', notify: true}
     },
     ready: function() {
       this.badges = [
@@ -139,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           "Successfully complete board of review"
         ]
       };
-      this.reqComplete = 10;
+      this.reqComplete = 0;
       this.reqStep = 100 / this.rank.requirements.length;
       this.reqProgress = this.reqComplete * this.reqStep;
     }

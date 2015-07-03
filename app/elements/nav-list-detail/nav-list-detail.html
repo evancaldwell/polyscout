@@ -275,7 +275,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _menuSelected: function (e) {
       // console.log(e.model.item.name);
-      this.$.mainContent.innerHTML = '<profile-card></profile-card>'
+      this.$.mainContent.innerHTML = '<profile-card scoutName="' + e.model.item.name +'"></profile-card>'; //TODO: instead of innerHTML build the element to avoid string concatenation
     },
 
     properties: {
