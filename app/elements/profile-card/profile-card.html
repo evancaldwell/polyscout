@@ -21,33 +21,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     paper-progress {
       height: 20px;
+      width: 100%;
+    }
+    paper-dialog {
+      /*height: 500px;*/
     }
     .greyscale {
       filter: grayscale(100%);
     }
     .btn-merit-badge {
-      width: 85%;
+      width: 90%;
       text-align: center;
       background-color: lightgrey;
     }
-    #personal-info {
-      margin: 10px;
-      width: 50%;
-    }
-    #rank-details {
-      margin: 10px;
-      width: 50%;
+    #personal-info, #rank-details {
+      /*margin: 10px;
+      width: 50%;*/
     }
     .rank-check{
       margin: 10px 0px;
     }
     #required-badge-wrapper > * {
       float: left;
+      width: 100%;
+    }
+    /*#required-badge-wrapper > h2 {
+      width: 100%;
+    }*/
+    .slideout {
+      position: absolute;
+      top: 20px;
+      height: 95%;
+      background-color: white;
+      width: 90%;
+    }
+    .slideout-right {
+      right: 0;
+    }
+    .right-close-slide-button {
+          position: absolute;
+          bottom: 0;
+          left: -40px;
+          background-color: white;
     }
   </style>
   <template>
-    <article class="layout horizontal">
-      <section id="personal-info" class="layout vertical">
+    <iron-grid>
+      <section id="personal-info" class="layout vertical s12 m6">
         <iron-image sizing="cover" preload fade src=""></iron-image>
         <div>
           <p>name: {{scoutname}}</p>
@@ -55,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p>rank: First Class</p>
         </div>
       </section>
-      <section id="rank-details">
+      <section id="rank-details" class=" s12 m6">
         <paper-progress value="{{reqProgress}}"></paper-progress>
         <div id="required-badge-wrapper">
           <h2>Requirements:</h2>
@@ -65,17 +85,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </div>
       </section>
+    </iron-grid>
+    <article class="layout vertical middle center">
+      <paper-button raised class="btn-merit-badge" on-tap="_toggleBadgeContainer">Merit Badges</paper-button>
     </article>
-    <article>
-      <paper-button raised class="btn-merit-badge">Merit Badges</paper-button>
-    </article>
-    <article>
+    <!-- ========== slide-out tester ========== -->
+    <paper-material elevation="3" id="badgesSlideout" class="slideout slideout-right">
+      <iron-grid>
+        <template is="dom-repeat" items="{{badges}}">
+          <badge-tile class="badge s12 m6" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
+        </template>
+      </iron-grid>
+      <paper-icon-button icon="arrow-forward" id="badge-close-btn" class="close-slide-btn right-close-slide-button" on-tap="_toggleBadgeContainer"></paper-icon-button>
+    </paper-material>
+    <!-- ========== Paper dialog tester ========== -->
+    <paper-dialog id="badgeDialog">
+      <h2>Header</h2>
+      <paper-dialog-scrollable>
+        <iron-grid>
+          <template is="dom-repeat" items="{{badges}}">
+            <badge-tile class="badge s12 m6" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
+          </template>
+        </iron-grid>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm>Accept</paper-button>
+      </div>
+    </paper-dialog>
+    <!-- <article>
       <h2>Output</h2>
       <p>reqComplete: <span>{{reqComplete}}</span></p>
       <p>req. length: <span>{{rank.requirements.length}}</span></p>
       <p>reqStep: <span>{{reqStep}}</span></p>
       <p>reqProg: <span>{{reqProgress}}</span></p>
-    </article>
+    </article> -->
   </template>
 </dom-module>
 <script>
@@ -92,6 +136,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.reqComplete--;
         this.reqProgress = this.reqComplete * this.reqStep;
       }
+    },
+    _toggleBadgeContainer: function() {
+        this.$.badgesSlideout.toggle();
     },
 
     properties: {
@@ -125,6 +172,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-ANML.aspx",
           "img": "http://www.scouting.org/filestore/boyscouts/jpg/animal_science_lg.jpg"
         },
+        {
+          "name": "Dentistry",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-DENT.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/dentistry_lg.jpg"
+        },
+        {
+          "name": "Digital Technology",
+          "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-DIG_TECH.aspx",
+          "img": "http://www.scouting.org/filestore/boyscouts/jpg/digital_tech_lg.jpg"
+        }
       ];
       this.rank = {
         "name": "Tenderfoot",

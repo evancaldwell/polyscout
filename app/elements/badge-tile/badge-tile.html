@@ -14,11 +14,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
       display: block;
-      width: 75px;
+      width: 50px;
       a {
         cursor: pointer;
         text-decoration: none;
       }
+    }
+    paper-material {
+      background-color: #fff;
+      margin: 5px 0;
     }
     iron-image {
       background-color: lightgray;
@@ -30,12 +34,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <div class="layout vertical middle">
+    <paper-material elevation="1" class="layout vertical middle center">
+      <iron-image class="greyscale" style="height:50px; width: 50px;" sizing="contain" preload fade src="{{img}}"></iron-image>
       <a href="{{url}}" target="_blank">
-        <iron-image class="greyscale" style="height:50px; width: 50px;" sizing="contain" preload fade src="{{img}}"></iron-image>
         <span class="paper-font-body1">{{name}}</span>
       </a>
-    </div>
+    </paper-material>
   </template>
 </dom-module>
 <script>
@@ -44,8 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'badge-tile',
 
     properties: {
-      image: String,
+      img: String,
       name: String,
+      url: String,
       foo: {type: String, value: 'bar', notify: true}
     }
   });
