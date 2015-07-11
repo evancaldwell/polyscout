@@ -45,24 +45,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       float: left;
       width: 100%;
     }
-    /*#required-badge-wrapper > h2 {
+    .slide-out-wrapper {
+      position: absolute;
+      overflow: hidden;
       width: 100%;
-    }*/
+      height: 100%;
+      top: 0;
+      right: 0;
+      transition: width 0.3s ease-in-out;
+    }
     .slideout {
       position: absolute;
-      top: 20px;
-      height: 95%;
+      top: 5px;
+      height: 97%;
       background-color: white;
       width: 90%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .slidein {
+      width: 0;
     }
     .slideout-right {
       right: 0;
     }
-    .right-close-slide-button {
-          position: absolute;
-          bottom: 0;
-          left: -40px;
-          background-color: white;
+    .slideout-inner { /* TODO: fix the inner div so it doesn't squash the contents as it shrinks */
+      width: 100%;
     }
   </style>
   <template>
@@ -87,32 +95,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </section>
     </iron-grid>
     <article class="layout vertical middle center">
-      <paper-button raised class="btn-merit-badge" on-tap="_toggleBadgeContainer">Merit Badges</paper-button>
+      <paper-button raised class="btn-merit-badge" on-tap="_openBadgeContainer">Merit Badges</paper-button>
     </article>
     <!-- ========== slide-out tester ========== -->
+    <div id="badgeSlideoutWrapper" class="slide-out-wrapper slidein">
     <paper-material elevation="3" id="badgesSlideout" class="slideout slideout-right">
-      <iron-grid>
-        <template is="dom-repeat" items="{{badges}}">
-          <badge-tile class="badge s12 m6" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
-        </template>
-      </iron-grid>
-      <paper-icon-button icon="arrow-forward" id="badge-close-btn" class="close-slide-btn right-close-slide-button" on-tap="_toggleBadgeContainer"></paper-icon-button>
-    </paper-material>
-    <!-- ========== Paper dialog tester ========== -->
-    <paper-dialog id="badgeDialog">
-      <h2>Header</h2>
-      <paper-dialog-scrollable>
+      <div class="slideout-inner">
+        <paper-toolbar>
+          <div class="title">Merit Badges</div>
+          <paper-icon-button icon="arrow-forward" on-tap="_closeBadgeContainer"></paper-icon-button>
+        </paper-toolbar>
         <iron-grid>
           <template is="dom-repeat" items="{{badges}}">
-            <badge-tile class="badge s12 m6" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
+            <badge-tile class="badge s12 m4 l3" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
           </template>
         </iron-grid>
-      </paper-dialog-scrollable>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm>Accept</paper-button>
       </div>
-    </paper-dialog>
+    </paper-material>
     <!-- <article>
       <h2>Output</h2>
       <p>reqComplete: <span>{{reqComplete}}</span></p>
@@ -137,8 +136,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.reqProgress = this.reqComplete * this.reqStep;
       }
     },
-    _toggleBadgeContainer: function() {
-        this.$.badgesSlideout.toggle();
+    _openBadgeContainer: function() {
+      console.log("clicked the arrow");
+      this.$.badgeSlideoutWrapper.classList.remove('slidein');
+      console.log("classList" + this.$.badgesSlideout.classList);
+    },
+    _closeBadgeContainer: function() {
+      console.log("clicked the arrow");
+      this.$.badgeSlideoutWrapper.classList.add('slidein');
+      console.log("classList" + this.$.badgesSlideout.classList);
     },
 
     properties: {
