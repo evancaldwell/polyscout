@@ -46,11 +46,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 100%;
     }
     .slide-out-wrapper {
-      position: absolute;
+      position: fixed;
       overflow: hidden;
-      width: 100%;
-      height: 100%;
-      top: 0;
+      width: 72%;
+      height: 95%;
+      top: 70px;
       right: 0;
       transition: width 0.3s ease-in-out;
     }
@@ -72,13 +72,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .slideout-inner { /* TODO: fix the inner div so it doesn't squash the contents as it shrinks */
       width: 100%;
     }
+
+    /*==========  Mobile First Media Queries  ==========*/
+    /* Custom, iPhone Retina */
+    @media only screen and (min-width : 320px) {
+      .slide-out-wrapper {
+        width: 100%;
+        height: 86%;
+      }
+      .slideout {
+        width: 95%;
+      }
+      .slidein {
+        width: 0;
+      }
+    }
+
+    /* Extra Small Devices, Phones */
+    @media only screen and (min-width : 480px) {
+      .slide-out-wrapper {
+        width: 100%;
+        height: 86%;
+      }
+      .slideout {
+        width: 95%;
+      }
+      .slidein {
+        width: 0;
+      }
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (min-width : 768px) {
+      .slide-out-wrapper {
+        width: 72%;
+        height: 94%;
+      }
+      .slideout {
+        width: 90%;
+      }
+      .slidein {
+        width: 0;
+      }
+    }
+
+    /* Medium Devices, Desktops */
+    @media only screen and (min-width : 992px) {
+      .slide-out-wrapper {
+        width: 72%;
+        height: 94%;
+      }
+      .slideout {
+        width: 90%;
+      }
+      .slidein {
+        width: 0;
+      }
+    }
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (min-width : 1200px) {
+      .slide-out-wrapper {
+        width: 72%;
+        height: 94%;
+      }
+      .slideout {
+        width: 90%;
+      }
+    }
   </style>
   <template>
     <iron-grid>
       <section id="personal-info" class="layout vertical s12 m6">
         <iron-image sizing="cover" preload fade src=""></iron-image>
         <div>
-          <p>name: {{scoutname}}</p>
+          <p>name: <span>{{scoutname}}</span></p>
           <p>age: 35</p>
           <p>rank: First Class</p>
         </div>
@@ -98,16 +166,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-button raised class="btn-merit-badge" on-tap="_openBadgeContainer">Merit Badges</paper-button>
     </article>
     <!-- ========== slide-out tester ========== -->
-    <div id="badgeSlideoutWrapper" class="slide-out-wrapper slidein">
+    <div id="badgeSlideoutWrapper" class="slide-out-wrapper slidein"> <!-- TODO: need to fix the slide in when tapping outside the menu -->
     <paper-material elevation="3" id="badgesSlideout" class="slideout slideout-right">
       <div class="slideout-inner">
         <paper-toolbar>
           <div class="title">Merit Badges</div>
+          <paper-input label="Filter" type="text" value="{{filterVal::input}}"></paper-input>
+          <paper-icon-button icon="search"></paper-icon-button>
           <paper-icon-button icon="arrow-forward" on-tap="_closeBadgeContainer"></paper-icon-button>
         </paper-toolbar>
         <iron-grid>
-          <template is="dom-repeat" items="{{badges}}">
-            <badge-tile class="badge s12 m4 l3" on-tap="_toggleBadge" img="{{item.img}}" name="{{item.name}}" url="{{item.URL}}"></badge-tile>
+          <firebase-collection
+            order-by-child="name"
+            location="https://scoutrac.firebaseio.com/meritBadges"
+            data="{{badges}}"></firebase-collection>
+          <template is="dom-repeat" items="{{badges}}" as="badge">
+            <!-- <h4>[[badge.__firebaseKey__]]</h4> -->
+            <badge-tile class="badge s12 m4 l3" on-tap="_toggleBadge" img="{{badge.img}}" name="{{badge.name}}" url="{{badge.URL}}"></badge-tile>
           </template>
         </iron-grid>
       </div>
@@ -152,7 +227,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       foo: {type: String, value: 'bar', notify: true}
     },
     ready: function() {
-      this.badges = [
+      this.badges1 = [
         {
           "name": "American Business",
           "URL": "http://www.scouting.org/scoutsource/BoyScouts/AdvancementandAwards/MeritBadges/mb-ABIZ.aspx",
