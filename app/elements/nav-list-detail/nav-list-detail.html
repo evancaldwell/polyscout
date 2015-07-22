@@ -233,8 +233,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- List -->
           <paper-menu class="list" on-iron-activate="_listTap">
-            <template is="dom-repeat" items="{{items}}">
-              <paper-item id="{{item.id}}" on-tap="_menuSelected"><span class="paper-font-body1">{{item.name}}</span></paper-item>
+            <firebase-collection
+              order-by-child="name"
+              location="https://scoutrac.firebaseio.com/users/example/scouts"
+              data="{{scouts}}"></firebase-collection> <!-- TODO: fix location URL to pull current user -->
+            <template is="dom-repeat" items="{{scouts}}">
+              <paper-item id="{{item.id}}" on-tap="_menuSelected"><span class="paper-font-body1">{{item.id}}</span></paper-item>
             </template>
           </paper-menu>
 
@@ -281,10 +285,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     properties: {
       items: {
         type: Array,
-        notify: true,
+        notify: true
+      },
+      currentUser: {
+        type: String,
+        notify: true
       }
     },
     ready: function() {
+      this.set('currentUser', 'example'),
       this.set('items', [
         {'name':'Scout 1', 'id':1},
         {'name':'Scout 2', 'id':2},

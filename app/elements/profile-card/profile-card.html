@@ -14,6 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
       display: block;
+      --paper-input-container-color: white;
+      --paper-input-container-input-color: white;
     }
     iron-image {
       background-color: lightgray;
@@ -130,14 +132,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
 
-    /* Large Devices, Wide Screens */
+    /* Large Devices */
     @media only screen and (min-width : 1200px) {
       .slide-out-wrapper {
         width: 72%;
         height: 94%;
       }
       .slideout {
-        width: 90%;
+        width: 80%;
+      }
+      .slidein {
+        width: 0;
+      }
+    }
+
+    /* Wide Screens */
+    @media only screen and (min-width : 1280px) {
+      .slide-out-wrapper {
+        width: 66%;
+        height: 94%;
+      }
+      .slideout {
+        width: 80%;
+      }
+      .slidein {
+        width: 0;
       }
     }
   </style>
@@ -165,7 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <article class="layout vertical middle center">
       <paper-button raised class="btn-merit-badge" on-tap="_openBadgeContainer">Merit Badges</paper-button>
     </article>
-    <!-- ========== slide-out tester ========== -->
+    <!-- ========== right slide-out drawer ========== -->
     <div id="badgeSlideoutWrapper" class="slide-out-wrapper slidein"> <!-- TODO: need to fix the slide in when tapping outside the menu -->
     <paper-material elevation="3" id="badgesSlideout" class="slideout slideout-right">
       <div class="slideout-inner">
@@ -180,7 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             order-by-child="name"
             location="https://scoutrac.firebaseio.com/meritBadges"
             data="{{badges}}"></firebase-collection>
-          <template is="dom-repeat" items="{{badges}}" as="badge">
+          <template is="dom-repeat" items="{{badges}}" as="badge" filter="{{_filter(filterVal)}}">
             <!-- <h4>[[badge.__firebaseKey__]]</h4> -->
             <badge-tile class="badge s12 m4 l3" on-tap="_toggleBadge" img="{{badge.img}}" name="{{badge.name}}" url="{{badge.URL}}"></badge-tile>
           </template>
@@ -212,7 +231,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },
     _openBadgeContainer: function() {
-      console.log("clicked the arrow");
+      console.log("clicked the button");
       this.$.badgeSlideoutWrapper.classList.remove('slidein');
       console.log("classList" + this.$.badgesSlideout.classList);
     },
@@ -220,6 +239,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       console.log("clicked the arrow");
       this.$.badgeSlideoutWrapper.classList.add('slidein');
       console.log("classList" + this.$.badgesSlideout.classList);
+    },
+    _filter: function(val) { //TODO: lowercase inputs
+      return function(person) {
+        if (!val) return true;
+        if (!person) return false;
+        return (person.name && ~person.name.indexOf(val));
+      };
     },
 
     properties: {
@@ -273,7 +299,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           "Campout meal preperation and explanation",
           "Demonstrate rope and knot skills",
           "Safe hiking explanation",
-          "Demonstrate prope American flag handling",
+          "Demonstrate proper American flag handling",
           "Repeat Scout Oath, Law, motto, and slogan",
           "Know patrol details",
           "Explain buddies and bullies",
@@ -285,6 +311,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           "Successfully complete board of review"
         ]
       };
+      // rank requirements calculated from checkboxes
       this.reqComplete = 0;
       this.reqStep = 100 / this.rank.requirements.length;
       this.reqProgress = this.reqComplete * this.reqStep;
